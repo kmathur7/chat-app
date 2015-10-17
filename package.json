@@ -19,7 +19,7 @@
   "dependencies": {
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
-    "gcm": "^1.0.1",
+    "gcm-push": "^1.0.1",
     "socket.io": "^1.3.7"
   }
 }

@@ -6,9 +6,9 @@ app.use(bodyParser.json());
 var http = require('http').Server(app);
 var fs = require('fs');
 var io = require('socket.io')(http);
-var GCM = require('gcm').GCM;
-var apiKey = 'AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI';
-var gcm = new GCM(apiKey);
+var GCMPush = require('gcm-push');
+var gcm = new GCMPush('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
+
 
 
 
@@ -41,62 +41,7 @@ app.get('/pushData', function (request,response) {
 
 
 app.get('/', function (request, response) {
-    var body = "";
-
-    request.on('data', function(chunk) {
-      body += chunk;
-    })
-
-    request.on('end', function() {
-      if (!body) return;
-      var obj = JSON.parse(body);
-      var bodyArray = [obj.statusType, obj.name, obj.endpoint];
-      console.log('POSTed: ' + obj.statusType);
-
-      if(obj.statusType === 'subscribe') {
-        fs.appendFile('endpoint.txt', bodyArray + '\n', function (err) {
-          if (err) throw err;
-          fs.readFile("endpoint.txt", function (err, buffer) {
-            var string = buffer.toString();
-            var array = string.split('\n');
-            for(i = 0; i < (array.length-1); i++) {
-              var subscriber = array[i].split(',');
-              console.log(subscriber[2]);
-                
-            };
-          });
-        });
-      } else if(obj.statusType === 'unsubscribe') {
-          fs.readFile("endpoint.txt", function (err, buffer) {
-            var newString = '';
-            var string = buffer.toString();
-            console.log('My string is: ' + string);
-            var array = string.split('\n');
-            console.log('My array is: ' + array);
-            for(i = 0; i < (array.length-1); i++) {
-              var subscriber = array[i].split(',');
-              console.log('Unsubscribe: ' + subscriber[1]);
-              console.log(subscriber[2]);
-              
-
-              if(obj.endpoint === subscriber[2]) {
-                console.log('subscriber found.');
-              } else {
-                newString += array[i] + '\n';
-              }
-
-              fs.writeFile('endpoint.txt', newString, function (err) {
-                  if (err) throw err;
-                  console.log('Subscriber unsubscribed');
-              });
-            }
-              
-          });
-
-        
-      }
-    });
-
+    
 response.writeHead(200, {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*", 
@@ -130,22 +75,8 @@ io.on('connection', function(socket){
   socket.on('new', function(msg){
     reg_ids.push(msg);
     var reg_id = ArrNoDupe(reg_ids); 
-    console.log(reg_id);
-
-    var message = {
-    registration_id: msg, // required
-    collapse_key: 'Collapse key', 
-    'data.key1': 'value1',
-    'data.key2': 'value2'
-};
-
-	gcm.send(message, function(err, messageId){
-    if (err) {
-        console.log("Something has gone wrong!");
-    } else {
-        console.log("Sent with message ID: ", messageId);
-    }
-});
+    
+    gcm.notifyDevices(reg_id, 'notification_title', 'my_message');
 
     
 
