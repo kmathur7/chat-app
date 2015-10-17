@@ -7,7 +7,7 @@ var io = require('socket.io')(http);
 var GCMPush = require('gcm-push');
 var gcm = new GCMPush('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
 
-
+var reg_ids = [];
 
 
 var opt = {
@@ -91,7 +91,8 @@ io.on('connection', function(socket){
 
   socket.on('new', function(msg){
     console.log('message: ' + msg);
-    gcm.notifyDevice(msg, 'notification title', 'my message');
+    reg_ids.push(msg);
+    gcm.notifyDevices(reg_ids, 'notification title', 'my message');
   });
 
 
