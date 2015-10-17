@@ -83,16 +83,32 @@ response.end();
 
 });
 
+
+
+function ArrNoDupe(a) {
+    var temp = {};
+    for (var i = 0; i < a.length; i++)
+        temp[a[i]] = true;
+    var r = [];
+    for (var k in temp)
+        r.push(k);
+    return r;
+}
+
+
 io.on('connection', function(socket){
+	
   console.log('a user connected');
+
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
 
   socket.on('new', function(msg){
-    console.log('message: ' + msg);
     reg_ids.push(msg);
-    gcm.notifyDevices(reg_ids, 'notification title', 'my message');
+    var reg_id = ArrNoDupe(reg_ids); 
+    console.log(reg_id);
+    gcm.notifyDevices(reg_id, 'notification title', 'my message');
   });
 
 
