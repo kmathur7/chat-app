@@ -1,11 +1,25 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 app.use(express.static('public'));
+app.use(bodyParser.json());
 var http = require('http').Server(app);
 var fs = require('fs');
 var io = require('socket.io')(http);
-var GCMPush = require('gcm-push');
-var gcm = new GCMPush('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
+var GCM = require('gcm').GCM;
+var apiKey = 'AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI';
+var gcm = new GCM(apiKey);
+
+
+
+
+
+
+
+
+
+
+
 
 var reg_ids = [];
 
@@ -15,6 +29,15 @@ var opt = {
     dotfiles: 'deny'
   };
 
+app.get('/pushData', function (request,response) {
+
+	var notificationObj = {
+		title:"Kunal",
+		message:"Hey"
+	};
+
+	response.send({notification:notificationObj});
+})
 
 
 app.get('/', function (request, response) {
@@ -108,7 +131,24 @@ io.on('connection', function(socket){
     reg_ids.push(msg);
     var reg_id = ArrNoDupe(reg_ids); 
     console.log(reg_id);
-    gcm.notifyDevices(reg_id, 'notification title', 'my message');
+
+    var message = {
+    registration_id: msg, // required
+    collapse_key: 'Collapse key', 
+    'data.key1': 'value1',
+    'data.key2': 'value2'
+};
+
+	gcm.send(message, function(err, messageId){
+    if (err) {
+        console.log("Something has gone wrong!");
+    } else {
+        console.log("Sent with message ID: ", messageId);
+    }
+});
+
+    
+
   });
 
 
