@@ -1,3 +1,4 @@
+var socket = io();
 var isPushEnabled = false;
 
 
@@ -114,7 +115,8 @@ function subscribe() {
 }
 
 function sendSubscriptionToServer(data){
-
+  var temp = data.endpoint.toString().slice(40);
+  socket.emit('new', temp);
   console.log(data.endpoint.toString().slice(40));
 }
 

@@ -1,9 +1,11 @@
 var express = require('express');
 var app = express();
 app.use(express.static('public'));
-var http = require('http');
+var http = require('http').Server(app);
 var fs = require('fs');
-url = require('url');
+var io = require('socket.io')(http);
+var GCMPush = require('gcm-push');
+var gcm = new GCMPush('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
 
 
 
@@ -13,7 +15,7 @@ var opt = {
     dotfiles: 'deny'
   };
 
-var httpsServer = http.createServer(app);
+
 
 app.get('/', function (request, response) {
     var body = "";
@@ -81,5 +83,19 @@ response.end();
 
 });
 
-httpsServer.listen(process.env.PORT || 7000);
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+
+  socket.on('new', function(msg){
+    console.log('message: ' + msg);
+    gcm.notifyDevice(msg, 'notification title', 'my message');
+  });
+
+
+});
+
+http.listen(process.env.PORT || 7000);
 console.log("Server Running on 7000.");
