@@ -6,10 +6,7 @@ var fs = require('fs');
 url = require('url');
 
 
-var options = {
-  pfx: fs.readFileSync('aa34f6b8-f1c5-4e32-afd7-7a5f9f0b659c.pfx'),
-  passphrase: 'password'
-};
+
 
 var opt = {
     root: __dirname + '/public/',
