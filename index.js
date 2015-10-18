@@ -103,8 +103,8 @@ io.on('connection', function(socket){
 
 	socket.on('chat message', function(msg){
     	console.log(msg.message);
-
-
+    	reg_ids.push(msg.regid);
+    	reg_id = ArrNoDupe(reg_ids); 
     	var messageToBeSent = remainingIds(msg.regid,reg_id);
     	Q.all([storeToDb(msg,reg_id),sendToGcm(reg_id)]).done(console.log("promise resolved"));
     	//storeToDb(msg,messageToBeSent);
