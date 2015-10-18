@@ -8,9 +8,18 @@ self.registration.pushManager.getSubscription().then(function(subscription){
     })
 
   event.waitUntil(  
+    self.registration.pushManager.getSubscription().then(function(subscription){
 
 
-    fetch('/pushData').then(function(response) { 
+
+    fetch('/pushData',{
+      method:'post',
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify(subscription)
+    }).then(function(response) { 
 
       if (response.status !== 200) {  
         // Either show a message to the user explaining the error  
@@ -50,6 +59,7 @@ self.registration.pushManager.getSubscription().then(function(subscription){
           icon: icon,  
           tag: notificationTag  
         });  
+    })
     })  
   );  
 });

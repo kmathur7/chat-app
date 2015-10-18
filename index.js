@@ -48,8 +48,8 @@ var options = {
 
 /*--- API ---*/
 
-app.get('/pushData', function (request,response) {
-
+app.post('/pushData', function (request,response) {
+	console.log(request.body);
 	var notificationObj = {
 		title:"Kunal",
 		message:"Hey"
