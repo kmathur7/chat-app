@@ -1,3 +1,36 @@
+console.log("SW startup");
+
+self.addEventListener('install', function(event) {
+  console.log("SW installed");
+
+  event.waitUntil(
+    caches.open('V1').then(function (cache) {
+      return cache.addAll([
+        '/images/chat.png',
+        '/lib/angular.min.js',
+        '/lib/socket.io.js'
+        ]);
+      // body...
+    })
+    )
+
+
+});
+
+self.addEventListener('activate', function(event) {
+  console.log("SW activated");
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+
+
 self.addEventListener('push', function(event) {  
   // Since there is no payload data with the first version  
   // of push messages, we'll grab some data from  
