@@ -198,13 +198,14 @@ function sendSubscriptionToServer(data){
 // --------------
 angular.module('chatApp',[])
 
-	.controller('ChatController',function ($scope,$http) {
+	.controller('ChatController',function ($scope) {
+    
     $scope.logi = false;
 		$scope.messages = [];
 		$scope.sendMessage = function(){
       
       messagePayload.message = $scope.chatmessage;
-      console.log(messagePayload);
+      
       socket.emit('chat message', messagePayload);
       $scope.chatmessage = "";
     };

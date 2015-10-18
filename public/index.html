@@ -17,7 +17,7 @@
 	<button ng-click="login()">Login</button>
 </div>
 <div ng-show="logi">
-		<div ng-repeat="message in messages track by $index">{{message.username}}: {{message.message}}</div>
+		<div ng-repeat="message in messages track by $index"><span ng-bind="message.username"></span>:<span ng-bind="message.message"></span></div>
 		<form>
 			<input type="text" data-ng-model="chatmessage" />
 			<button ng-click="sendMessage()">Send</button>	
@@ -30,7 +30,7 @@
 
 
 
-<script src="./lib/angular.js"></script>
+<script src="./lib/angular.min.js"></script>
 <script src="./lib/socket.io.js"></script>
 <script src="./scripts/app.js"></script>
 </body>
