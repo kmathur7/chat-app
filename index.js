@@ -100,8 +100,8 @@ io.on('connection', function(socket){
     	console.log(msg.message);
     	//var messageToBeSent = remainingIds(msg.regid,reg_id);
     	//console.log(messageToBeSent);
-    	storeToDb(msg,messageToBeSent);
-    	gcm.notifyDevices(messageToBeSent, 'notification_title', 'my_message');
+    	//storeToDb(msg,messageToBeSent);
+    	//gcm.notifyDevices(messageToBeSent, 'notification_title', 'my_message');
     	io.emit('newmsg', msg);
   	});
 
