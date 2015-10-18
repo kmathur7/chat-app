@@ -50,13 +50,31 @@ var options = {
 
 app.post('/pushData', function (request,response) {
 	sub_id = request.body.endpoint.toString().slice(40);
-	console.log(sub_id);
-	var notificationObj = {
+	//console.log(sub_id);
+
+	Notification
+	.findOne({subscriptionId: sub_id, sent: false})
+	.exec(function(err,notification){
+		if(err) { console.log(err); }
+		notification.sent = true;
+		notification.save(function(err) {
+			if(err) { console.log(err); }
+			else{
+				var notificationObj = {
+					title:notification.title,
+					message:notification.body
+				};
+				response.send({notification:notificationObj});
+			}
+		});
+	});
+
+	/* var notificationObj = {
 		title:"Kunal",
 		message:"Hey"
-	};
+	}; *//
 
-	response.send({notification:notificationObj});
+	
 });
 
 
