@@ -1,4 +1,13 @@
 var socket = io();
+var messagePayload = {
+        "id":"",
+        "regid":"",
+        'message':"",
+        "username":""
+      };
+socket.on('id', function (msg) {
+      messagePayload.id = msg;
+    });
 var isPushEnabled = false;
 
 
@@ -89,7 +98,7 @@ function subscribe() {
         isPushEnabled = true;  
         pushButton.textContent = 'Disable Push Messages';  
         pushButton.disabled = false;
-        console.log(subscription.endpoint);
+        
         // TODO: Send the subscription.endpoint to your server  
         // and save it to send a push message at a later date
         return sendSubscriptionToServer(subscription);  
@@ -160,10 +169,13 @@ function unsubscribe() {
 }
 
 function sendSubscriptionToServer(data){
-  var temp = data.endpoint.toString().slice(40);
-  socket.emit('new', temp);
-  console.log(data.endpoint.toString().slice(40));
+  //var temp = data.endpoint.toString().slice(40);
+  socket.emit('new', data);
+  messagePayload.regid = data.endpoint.toString().slice(40);
 }
+
+
+
 
 
 
@@ -187,8 +199,25 @@ function sendSubscriptionToServer(data){
 angular.module('chatApp',[])
 
 	.controller('ChatController',function ($scope,$http) {
-		
-		function sendSubscriptionToServer (data) {
-      // body...
+    $scope.logi = false;
+		$scope.messages = [];
+		$scope.sendMessage = function(){
+      
+      messagePayload.message = $scope.chatmessage;
+      console.log(messagePayload);
+      socket.emit('chat message', messagePayload);
+      $scope.chatmessage = "";
+    };
+
+    $scope.login = function (argument) {
+      messagePayload.username = $scope.username;
+      $scope.logi = true;
     }
+
+    socket.on('newmsg', function(msg){
+
+      $scope.messages.push(msg);
+      $scope.$apply();
+    });
+
 	});

@@ -10,24 +10,38 @@ var GCMPush = require('gcm-push');
 var gcm = new GCMPush('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
 
 
+/*-- DB Connection -- */
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://kunal:kunal123@ds041154.mongolab.com:41154/chat');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function (callback) {
+  console.log("db connected!!");
+});
+
+/* -- Defining Schemas -- */
+var Schema = mongoose.Schema;
+var notificationSchema = new Schema({
+  subscriptionId:  String,
+  title: String,
+  body: String,
+  sent: {type: Boolean, default:false}
+});
+
+var Notification = mongoose.model('Notification', notificationSchema);
 
 
-
-
-
-
-
-
-
-
-
+/*-- certail required variables -- */
 var reg_ids = [];
-
-
-var opt = {
+var reg_id = [];
+var options = {
     root: __dirname + '/public/',
     dotfiles: 'deny'
   };
+
+
+
+/*--- API ---*/
 
 app.get('/pushData', function (request,response) {
 
@@ -37,7 +51,7 @@ app.get('/pushData', function (request,response) {
 	};
 
 	response.send({notification:notificationObj});
-})
+});
 
 
 app.get('/', function (request, response) {
@@ -46,7 +60,7 @@ response.writeHead(200, {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*", 
   "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin, Access-Control-Allow-Headers"});
-response.sendFile('index.html',opt);
+response.sendFile('index.html',options);
 response.end();
 
 });
@@ -66,24 +80,60 @@ function ArrNoDupe(a) {
 
 io.on('connection', function(socket){
 	
-  console.log('a user connected');
+	console.log('a user connected');
+  	io.sockets.connected[socket.id].emit("id", socket.id);
+  	//socket.send(socket.id);
 
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
+	socket.on('disconnect', function(){
+		console.log(socket.id);
+    	console.log('user disconnected');
+  	});
 
-  socket.on('new', function(msg){
-    reg_ids.push(msg);
-    var reg_id = ArrNoDupe(reg_ids); 
-    
-    gcm.notifyDevices(reg_id, 'notification_title', 'my_message');
+  	socket.on('new', function(msg){
+  		var reg = msg.endpoint.toString().slice(40);
+    	reg_ids.push(reg);
+    	reg_id = ArrNoDupe(reg_ids); 
+    	//gcm.notifyDevices(reg_id, 'notification_title', 'my_message');
+	});
 
-    
-
-  });
+	socket.on('chat message', function(msg){
+    	console.log(msg.message);
+    	var messageToBeSent = remainingIds(msg.regid,reg_id);
+    	console.log(messageToBeSent);
+    	storeToDb(msg,messageToBeSent);
+    	gcm.notifyDevices(messageToBeSent, 'notification_title', 'my_message');
+    	io.emit('newmsg', msg);
+  	});
 
 
 });
+
+function storeToDb (message,array) {
+	for(var i=0;i<array.length;i++){
+		var newNotification = new Notification({subscriptionId:array[i],title:message.username,body:message.message});
+
+		newNotification.save(function (err) {
+    		if (err) {
+    			console.log(err);
+    		}
+    		else{
+    			console.log("saved");
+    		}
+  			// saved!
+  		});
+	}
+
+}
+
+
+function remainingIds (id,array) {
+	var idx = array.indexOf(id);
+	if (idx > -1) {
+    	array.splice(idx,1);
+	}
+	return array;
+
+}
 
 http.listen(process.env.PORT || 7000);
 console.log("Server Running on 7000.");

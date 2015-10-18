@@ -11,10 +11,19 @@
 
 
 <div data-ng-controller="ChatController">
-	<button class="js-push-button" disabled>
-  Enable Push Messages  
-</button>
-	
+<div ng-show="!logi">
+	<button class="js-push-button" disabled>Enable Push Messages</button>
+	<input type="text" ng-model="username" />
+	<button ng-click="login()">Login</button>
+</div>
+<div ng-show="logi">
+		<div ng-repeat="message in messages track by $index">{{message.username}}: {{message.message}}</div>
+		<form>
+			<input type="text" data-ng-model="chatmessage" />
+			<button ng-click="sendMessage()">Send</button>	
+		</form>
+		
+	</div>	
 </div>
 
 

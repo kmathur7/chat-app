@@ -3,9 +3,12 @@ self.addEventListener('push', function(event) {
   // of push messages, we'll grab some data from  
   // an API and use it to populate a notification 
   
-
+self.registration.pushManager.getSubscription().then(function(subscription){
+      console.log(subscription);
+    })
 
   event.waitUntil(  
+
 
     fetch('/pushData').then(function(response) { 
 
