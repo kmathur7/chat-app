@@ -12,7 +12,7 @@ var gcm = new GCMPush('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
 
 /*-- DB Connection -- */
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://kunal:kunal123@ds041154.mongolab.com:41154/chat');
+mongoose.connect('mongodb://heroku_j3swk10r:9q50icdk7o0t6p66o36u1ca168@ds041154.mongolab.com:41154/heroku_j3swk10r');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
@@ -98,8 +98,8 @@ io.on('connection', function(socket){
 
 	socket.on('chat message', function(msg){
     	console.log(msg.message);
-    	var messageToBeSent = remainingIds(msg.regid,reg_id);
-    	console.log(messageToBeSent);
+    	//var messageToBeSent = remainingIds(msg.regid,reg_id);
+    	//console.log(messageToBeSent);
     	storeToDb(msg,messageToBeSent);
     	gcm.notifyDevices(messageToBeSent, 'notification_title', 'my_message');
     	io.emit('newmsg', msg);
