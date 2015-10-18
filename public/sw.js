@@ -38,7 +38,7 @@ self.registration.pushManager.getSubscription().then(function(subscription){
 
         var title = data.notification.title;  
         var message = data.notification.message;  
-        var icon = data.notification.icon;  
+        var icon = '/images/chat.png';  
         var notificationTag = data.notification.tag;
 
         return self.registration.showNotification(title, {  
@@ -62,4 +62,30 @@ self.registration.pushManager.getSubscription().then(function(subscription){
     })
     })  
   );  
+});
+
+
+self.addEventListener('notificationclick', function(event) {  
+  console.log('On notification click: ', event.notification.tag);  
+  // Android doesn't close the notification when you click on it  
+  // See: http://crbug.com/463146  
+  event.notification.close();
+
+  // This looks to see if the current is already open and  
+  // focuses if it is  
+  event.waitUntil(
+    clients.matchAll({  
+      type: "window"  
+    })
+    .then(function(clientList) {  
+      for (var i = 0; i < clientList.length; i++) {  
+        var client = clientList[i];  
+        if (client.url == '/' && 'focus' in client)  
+          return client.focus();  
+      }  
+      if (clients.openWindow) {
+        return clients.openWindow('/');  
+      }
+    })
+  );
 });
