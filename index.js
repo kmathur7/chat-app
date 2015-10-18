@@ -49,7 +49,8 @@ var options = {
 /*--- API ---*/
 
 app.post('/pushData', function (request,response) {
-	console.log(request.body);
+	sub_id = request.body.endpoint.toString().slice(40);
+	console.log(sub_id);
 	var notificationObj = {
 		title:"Kunal",
 		message:"Hey"
