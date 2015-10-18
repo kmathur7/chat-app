@@ -72,7 +72,7 @@ app.post('/pushData', function (request,response) {
 	/* var notificationObj = {
 		title:"Kunal",
 		message:"Hey"
-	}; *//
+	}; */
 
 	
 });
