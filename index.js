@@ -6,8 +6,13 @@ app.use(bodyParser.json());
 var http = require('http').Server(app);
 var fs = require('fs');
 var io = require('socket.io')(http);
-var GCMPush = require('gcm-push');
-var gcm = new GCMPush('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
+//var GCMPush = require('gcm-push');
+//var gcm = new GCMPush('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
+var gcm = require('node-gcm');
+var message1 = new gcm.Message();
+var Q = require('q');
+
+message1.addData('key1', 'msg1');
 
 
 /*-- DB Connection -- */
@@ -98,8 +103,10 @@ io.on('connection', function(socket){
 
 	socket.on('chat message', function(msg){
     	console.log(msg.message);
-    	//var messageToBeSent = remainingIds(msg.regid,reg_id);
-    	//console.log(messageToBeSent);
+
+
+    	var messageToBeSent = remainingIds(msg.regid,reg_id);
+    	Q.all([storeToDb(msg,reg_id),sendToGcm(reg_id)]).done(console.log("promise resolved"));
     	//storeToDb(msg,messageToBeSent);
     	//gcm.notifyDevices(messageToBeSent, 'notification_title', 'my_message');
     	io.emit('newmsg', msg);
@@ -107,10 +114,24 @@ io.on('connection', function(socket){
 
 
 });
+function sendToGcm (arrayTobeSent){
+	
+	console.log(arrayTobeSent);
+	//gcm.notifyDevices(arrayTobeSent, 'notification_title', 'my_message');
+	var sender = new gcm.Sender('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
+	sender.send(message1, { registrationIds: arrayTobeSent }, function (err, result) {
+    if(err) console.error(err);
+    else    console.log(result);
+});
+	
+}
+function storeToDb (message,arr) {
+	console.log("message" + message.message);
+	console.log("array" + arr);
+	
 
-function storeToDb (message,array) {
-	for(var i=0;i<array.length;i++){
-		var newNotification = new Notification({subscriptionId:array[i],title:message.username,body:message.message});
+	for(var i=0;i<arr.length;i++){
+		var newNotification = new Notification({subscriptionId:arr[i],title:message.username,body:message.message});
 
 		newNotification.save(function (err) {
     		if (err) {
@@ -122,6 +143,7 @@ function storeToDb (message,array) {
   			// saved!
   		});
 	}
+	
 
 }
 
