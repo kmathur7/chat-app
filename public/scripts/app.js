@@ -196,7 +196,7 @@ function sendSubscriptionToServer(data){
 
 
 // --------------
-angular.module('chatApp',[])
+angular.module('chatApp',['ngMaterial'])
 
 	.controller('ChatController',function ($scope) {
     
