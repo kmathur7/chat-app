@@ -54,7 +54,7 @@ app.post('/pushData', function (request,response) {
 	//console.log(sub_id);
 
 	Notification
-	.findOne({subscriptionId: sub_id, sent: false, date:{$gt: new Date(ISODate().getTime() - 1000 * 60 * 1)}})
+	.findOne({subscriptionId: sub_id, sent: false, date:{$gt: new Date(ISODate().getTime() - 1000 * 60 * 2)}})
 	.exec(function(err,notification){
 		if(err) { console.log(err); }
 		notification.sent = true;
