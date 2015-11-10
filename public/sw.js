@@ -8,6 +8,10 @@ self.addEventListener('install', function(event) {
       return cache.addAll([
         '/images/chat.png',
         '/lib/angular.min.js',
+        '/lib/angular-animate.min.js',
+        '/lib/angular-aria.min.js',
+        '/lib/angular-material.min.js',
+        '/scripts/app.js',
         '/lib/socket.io.js'
         ]);
       // body...
@@ -83,15 +87,8 @@ self.registration.pushManager.getSubscription().then(function(subscription){
     }).catch(function(err) {  
       console.error('Unable to retrieve data', err);
 
-      var title = 'An error occurred';
-      var message = 'We were unable to get the information for this push message';  
-      var icon = "";  
-      var notificationTag = 'notification-error';  
-      return self.registration.showNotification(title, {  
-          body: message,  
-          icon: icon,  
-          tag: notificationTag  
-        });  
+  
+      return;  
     })
     })  
   );  
