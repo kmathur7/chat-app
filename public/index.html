@@ -14,17 +14,16 @@
 
 
 
-<div data-ng-controller="ChatController">
-
-
-<div ng-show="!logi" flex>
-	<button class="js-push-button" disabled>Enable Push Messages</button>
-	<input type="text" ng-model="username" />
-	<button ng-click="login()">Login</button>
-</div>
-<div ng-show="logi" flex>
-
-	<md-content flex layout-fill layout="column"> <!-- this is what I change -->
+<div data-ng-controller="ChatController" layout="column">
+	<md-content ng-show="!logi">
+		<button class="js-push-button" disabled>Enable Push Messages</button>
+		<md-input-container>
+			<label>Username</label>
+			<input type="text" ng-model="username" md-detect-hidden="true" />
+		</md-input-container>
+		<md-button class="md-raised md-primary"ng-click="login()">Login</md-button>
+	</md-content>
+	<md-content layout-padding ng-show="logi"> <!-- this is what I change -->
       	
       	<md-list>
   			<md-list-item class="md-2-line" ng-repeat="message in messages track by $index">    
@@ -35,28 +34,31 @@
   			</md-list-item>
 		</md-list>
 
-		<md-content class="chatbox" layout="row">
+		
+		
+		
+    </md-content>
+  	<md-content layout="row" layout-wrap ng-show="logi">
 			
 
-			<div flex>
+			<div flex="90" flex-md="80" flex-sm="70">
 				<md-input-container>
   					<label>Enter Message</label>
   					<input ng-model="chatmessage" md-detect-hidden="true"></input>
 	  			</md-input-container>
-	  			
 			</div>
-			<div flex>
-				<md-button class="md-raised md-primary" ng-click="sendMessage()"> Send </md-button>
-			</div>
-		</md-content>
+				
+	  		<div flex="10" flex-md="20" flex-sm="30">
+	  			<md-button class="md-raised md-primary" ng-click="sendMessage()"> Send </md-button>
+	  		</div>	
+				
+				
+			
+	</md-content>
 
 		
-		
-    </md-content>
-  	
-		
 </div>	
-</div>
+
 
 
 
