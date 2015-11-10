@@ -30,7 +30,8 @@ var notificationSchema = new Schema({
   subscriptionId:  String,
   title: String,
   body: String,
-  sent: {type: Boolean, default:false}
+  sent: {type: Boolean, default:false},
+  date: {type: Date, default: Date.now}
 });
 
 var Notification = mongoose.model('Notification', notificationSchema);
@@ -53,8 +54,9 @@ app.post('/pushData', function (request,response) {
 	//console.log(sub_id);
 
 	Notification
-	.findOne({subscriptionId: sub_id, sent: false})
+	.find({subscriptionId: sub_id, sent: false}).sort('-date').limit(1)
 	.exec(function(err,notification){
+		console.log('ahem'+ notification);
 		if(err) { console.log(err); }
 		notification.sent = true;
 		notification.save(function(err) {
