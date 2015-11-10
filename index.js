@@ -31,7 +31,7 @@ var notificationSchema = new Schema({
   title: String,
   body: String,
   sent: {type: Boolean, default:false},
-  date: {type: Date, default: Date.now}
+  date: {type: Date, default: Date.now, expires: 60}
 });
 
 var Notification = mongoose.model('Notification', notificationSchema);
@@ -54,7 +54,7 @@ app.post('/pushData', function (request,response) {
 	//console.log(sub_id);
 
 	Notification
-	.findOne({subscriptionId: sub_id, sent: false, date:{$gt: new Date(ISODate().getTime() - 1000 * 60 * 2)}})
+	.findOne({subscriptionId: sub_id, sent: false})
 	.exec(function(err,notification){
 		if(err) { console.log(err); }
 		notification.sent = true;
