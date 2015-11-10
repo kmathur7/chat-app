@@ -197,6 +197,11 @@ function sendSubscriptionToServer(data){
 
 // --------------
 angular.module('chatApp',['ngMaterial'])
+  .config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('brown')
+    .accentPalette('orange');
+  })
 
 	.controller('ChatController',function ($scope) {
     
