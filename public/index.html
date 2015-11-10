@@ -17,6 +17,7 @@
 <div data-ng-controller="ChatController" layout="column">
 	<md-content ng-show="!logi">
 		<button class="js-push-button" disabled>Enable Push Messages</button>
+		<md-switch class="md-primary md-block" ng-model="isPushEnabled" ng-disabled="isDisabled" >Push Messaging</md-switch>
 		<md-input-container>
 			<label>Username</label>
 			<input type="text" ng-model="username" md-detect-hidden="true" />
@@ -31,6 +32,7 @@
       				<h3 ng-bind="message.username"></h3>
       				<p ng-bind="message.message"></p>
     			</div>
+    			<md-divider></md-divider>
   			</md-list-item>
 		</md-list>
 
