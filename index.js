@@ -54,9 +54,8 @@ app.post('/pushData', function (request,response) {
 	//console.log(sub_id);
 
 	Notification
-	.find({subscriptionId: sub_id, sent: false}).sort('-date').limit(1)
+	.findOne({subscriptionId: sub_id, sent: false, date:{$gt: new Date(ISODate().getTime() - 1000 * 60 * 1)}})
 	.exec(function(err,notification){
-		console.log('ahem'+ notification);
 		if(err) { console.log(err); }
 		notification.sent = true;
 		notification.save(function(err) {
