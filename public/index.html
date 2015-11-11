@@ -43,6 +43,64 @@
 		
 		
     </md-content>
+    <md-fab-toolbar md-open="demo.isOpen" count="demo.count" md-direction="left" md-fab-bottom-right ng-click="emojify()" ng-show="logi">
+    				<md-fab-trigger class="align-with-text">
+      					<md-button aria-label="menu" class="md-fab md-primary">
+        					<md-icon md-svg-src="./images/emoticon.svg"></md-icon>
+      					</md-button>
+    				</md-fab-trigger>
+    				<md-toolbar>
+      					<md-fab-actions class="md-toolbar-tools">
+        					<md-button class="md-icon-button" ng-click="addEmoji(0)">
+          						&#x1f600;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(1)">
+          						&#x1f601;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(2)">
+          						&#x1f61b;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(3)">
+          						&#x1f61d;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(4)">
+          						&#x1f602;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(5)">
+          						&#x1f609;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(6)">
+          						&#x1f60e;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(7)">
+          						&#x1f610;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(8)">
+          						&#x1f616;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(9)">
+          						&#x1f620;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(10)">
+          						&#x1f62d;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(11)">
+          						&#x1f634;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(12)">
+          						&#x1f631;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(13)">
+          						&#x1f44c;
+        					</md-button>
+        					<md-button class="md-icon-button" ng-click="addEmoji(14)">
+          						&#x1f44f;
+        					</md-button>
+
+	        				
+      					</md-fab-actions>
+    				</md-toolbar>
+  	</md-fab-toolbar>
   	<md-content layout="row" ng-show="logi">
 			<form layout flex="100">
 
@@ -55,7 +113,9 @@
 				
 	  		<div flex="10" flex-md="20" flex-sm="30">
 	  			<md-button type="submit" class="md-raised md-primary" ng-click="sendMessage()"> Send </md-button>
-	  		</div>	
+			</div>
+				
+
 			</form>	
 				
 			

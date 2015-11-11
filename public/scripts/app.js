@@ -1,6 +1,9 @@
 function emojify(){
   twemoji.parse(document.body);
+  return;
 }
+
+
 angular.module('chatApp',['ngMaterial','ngSanitize','sc.twemoji'])
   .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
@@ -193,8 +196,7 @@ angular.module('chatApp',['ngMaterial','ngSanitize','sc.twemoji'])
     };
 
 
-
-
+    
 
 
 
@@ -229,7 +231,7 @@ angular.module('chatApp',['ngMaterial','ngSanitize','sc.twemoji'])
     
     $scope.logi = false;
 		$scope.messages = [];
-
+    $scope.chatmessage="";
 		$scope.sendMessage = function(){
       
       messagePayload.message = $scope.chatmessage;
@@ -242,10 +244,29 @@ angular.module('chatApp',['ngMaterial','ngSanitize','sc.twemoji'])
       messagePayload.username = $scope.username;
       $scope.logi = true;
     }
+
+    $scope.isOpen = false;
+      $scope.demo = {
+        isOpen: false,
+        count: 0,
+        selectedDirection: 'right'
+      };
+
+    $scope.emojify = function () {
+      emojify()
+
+    };
+
+    $scope.addEmoji = function (id) {
+      var emojilist = ['&#x1f600;','&#x1f601;','&#x1f61b;','&#x1f61d;','&#x1f602','&#x1f609','&#x1f60e','&#x1f610','&#x1f616','&#x1f620','&#x1f62d','&#x1f634','&#x1f631','&#x1f44c;','&#x1f44f;'];
+      $scope.chatmessage = $scope.chatmessage + " "+ emojilist[id] + " ";
+    }
+
     var socket = io();
 
     socket.on('id', function (msg) {
       messagePayload.id = msg;
+      
     });
 
     socket.on('newmsg', function(msg){
