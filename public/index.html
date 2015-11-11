@@ -43,8 +43,8 @@
 		
 		
     </md-content>
-  	<md-content layout="row" layout-wrap ng-show="logi">
-			
+  	<md-content layout="row" ng-show="logi">
+			<form layout flex="100">
 
 			<div flex="90" flex-md="80" flex-sm="70">
 				<md-input-container>
@@ -54,9 +54,9 @@
 			</div>
 				
 	  		<div flex="10" flex-md="20" flex-sm="30">
-	  			<md-button class="md-raised md-primary" ng-click="sendMessage()"> Send </md-button>
+	  			<md-button type="submit" class="md-raised md-primary" ng-click="sendMessage()"> Send </md-button>
 	  		</div>	
-				
+			</form>	
 				
 			
 	</md-content>
