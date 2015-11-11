@@ -1,11 +1,15 @@
-angular.module('chatApp',['ngMaterial'])
+function emojify(){
+  twemoji.parse(document.body);
+}
+angular.module('chatApp',['ngMaterial','ngSanitize','sc.twemoji'])
   .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('brown')
     .accentPalette('orange');
   })
+  
 
-	.controller('ChatController',function ($scope,$window) {
+	.controller('ChatController',function ($scope,$window,twemoji) {
     var messagePayload = {
         "id":"",
         "regid":"",
@@ -245,9 +249,11 @@ angular.module('chatApp',['ngMaterial'])
     });
 
     socket.on('newmsg', function(msg){
-
+      
       $scope.messages.push(msg);
       $scope.$apply();
+      emojify()
+
     });
 
 	});

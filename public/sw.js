@@ -11,6 +11,9 @@ self.addEventListener('install', function(event) {
         '/lib/angular-animate.min.js',
         '/lib/angular-aria.min.js',
         '/lib/angular-material.min.js',
+        '/lib/angular-sanitize.min.js',
+        '/lib/angular-twemoji.min.js',
+        '/lib/twemoji.min.js',
         '/scripts/app.js',
         '/lib/socket.io.js'
         ]);

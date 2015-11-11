@@ -15,6 +15,7 @@
 
 
 <div data-ng-controller="ChatController" layout="column">
+	
 	<md-content ng-show="!logi">
 		
 		<md-switch class="md-primary md-block" ng-model="isPushEnabled" ng-disabled="isDisabled" ng-click="changePushState()">Push Messaging</md-switch>
@@ -29,8 +30,10 @@
       	<md-list>
   			<md-list-item class="md-2-line" ng-repeat="message in messages track by $index">    
     			<div class="md-list-item-text">
-      				<h3 ng-bind="message.username"></h3>
-      				<p ng-bind="message.message"></p>
+    				
+      					<h3 ng-bind="message.username"></h3>
+      					<twemoji><p ng-bind-html="message.message"></p>
+      				</twemoji>
     			</div>
     			<md-divider></md-divider>
   			</md-list-item>
@@ -67,9 +70,13 @@
 
 
 <script src="./lib/angular.min.js"></script>
+<script src="./lib/angular-sanitize.min.js"></script>
 <script src="./lib/angular-animate.min.js"></script>
 <script src="./lib/angular-aria.min.js"></script>
 <script src="./lib/angular-material.min.js"></script>
+<script src="./lib/twemoji.min.js"></script>
+<script src="./lib/angular-twemoji.min.js"></script>
+
 
 <script src="./lib/socket.io.js"></script>
 

@@ -122,11 +122,11 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('chat message', function(msg){
-    	console.log(msg.message);
+    	//console.log(msg.message);
     	reg_ids.push(msg.regid);
     	reg_id = ArrNoDupe(reg_ids); 
     	var messageToBeSent = remainingIds(msg.regid,reg_id);
-    	Q.all([storeToDb(msg,reg_id),sendToGcm(reg_id)]).done(console.log("promise resolved"));
+    	Q.all([storeToDb(msg,reg_id),sendToGcm(reg_id)]).done();
     	//storeToDb(msg,messageToBeSent);
     	//gcm.notifyDevices(messageToBeSent, 'notification_title', 'my_message');
     	io.emit('newmsg', msg);
@@ -136,7 +136,7 @@ io.on('connection', function(socket){
 });
 function sendToGcm (arrayTobeSent){
 	
-	console.log(arrayTobeSent);
+	//console.log(arrayTobeSent);
 	//gcm.notifyDevices(arrayTobeSent, 'notification_title', 'my_message');
 	var sender = new gcm.Sender('AIzaSyCdDZj8GxAl-_LUhjH7u-Mb4nW0t5019xI');
 	sender.send(message1, { registrationIds: arrayTobeSent }, function (err, result) {
@@ -146,8 +146,8 @@ function sendToGcm (arrayTobeSent){
 	
 }
 function storeToDb (message,arr) {
-	console.log("message" + message.message);
-	console.log("array" + arr);
+	//console.log("message" + message.message);
+	//console.log("array" + arr);
 	
 
 	for(var i=0;i<arr.length;i++){
@@ -158,7 +158,7 @@ function storeToDb (message,arr) {
     			console.log(err);
     		}
     		else{
-    			console.log("saved");
+    			//console.log("saved");
     		}
   			// saved!
   		});
